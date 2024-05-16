@@ -1,0 +1,12 @@
+.wp-block-post-content h1:not(.h1) {
+    border: 3px solid red;
+    padding: 16px;
+}
+
+.wp-block-post-content h1:not(.h1)::before {
+    content: 'Warning: Setting this to H1 will hide the Title at the top of the page';
+    color: red;
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+}

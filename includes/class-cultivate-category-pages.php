@@ -4,7 +4,7 @@
  *
  * @package      Cultivate_Category_Pages
  * @author       CultivateWP
- * @since        1.0.0
+ * @since        1.1.0
  * @license      GPL-2.0+
 **/
 
@@ -77,8 +77,8 @@ final class Cultivate_Category_Pages {
 			add_action( 'admin_bar_menu', [ self::$instance, 'admin_bar_link_back' ], 90 );
 			add_filter( 'post_type_link', [ self::$instance, 'post_type_link' ], 10, 2 );
 			add_filter( 'wpseo_sitemap_exclude_post_type', [ self::$instance, 'wpseo_sitemap_exclude' ], 10, 2 );
-			add_filter( 'plugin_row_meta', [ self::$instance, 'plugin_notice' ], 10, 2 );
 			add_action( 'enqueue_block_editor_assets', [ self::$instance, 'h1_warning' ] );
+			add_action( 'wp_dashboard_setup', [ self::$instance, 'register_dashboard_widget' ] );
 			
 			// Theme locations
 			$locations = apply_filters(
@@ -134,10 +134,6 @@ final class Cultivate_Category_Pages {
 	 * @since 0.1.0
 	 */
 	public function includes() {
-
-		if ( ! $this->is_active_client() ) {
-			return;
-		}
 
 		if( is_admin() ) {
 			require CULTIVATE_CATEGORY_PAGES_PLUGIN_DIR . 'includes/updater/plugin-update-checker.php';
@@ -570,21 +566,7 @@ final class Cultivate_Category_Pages {
 	 */
 	function is_active_client() {
 		$theme   = wp_get_theme();
-		return 'CultivateWP' === $theme->get( 'Author' );
-	}
-
-	/**
-	 * Plugin notice
-	 */
-	function plugin_notice( $items, $file ) {
-		if ( $this->is_active_client() ) {
-			return $items;
-		}
-
-		if ( false !== strpos( $file, 'cultivate-category-pages' ) ) {
-			$items[] = 'Updates are only available to CultivateWP clients';
-		}
-		return $items;
+		return 'CultivateWP' === $theme->get( 'Author' ) && 'Cultivate Builder' !== $theme->get( 'Name' );
 	}
 
 	/**
@@ -595,6 +577,43 @@ final class Cultivate_Category_Pages {
 		$display = apply_filters( 'cultivate_category_pages_h1_warning', 'post' === $screen->post_type );
 		if ( $display ) {
 			wp_enqueue_style( 'cultivate-category-pages-h1-warning', CULTIVATE_CATEGORY_PAGES_PLUGIN_URL . 'assets/css/h1-warning.css', [], CULTIVATE_CATEGORY_PAGES_VERSION );
+		}
+	}
+
+	/**
+	 * Register dashboard widget
+	 */
+	function register_dashboard_widget() {
+		if ( ! apply_filters( 'cultivate_category_pages/disable_dashboard_widget', false ) ) {
+			wp_add_dashboard_widget('cwp_notice', 'Recent tutorials by CultivateWP', [ self::$instance, 'dashboard_widget' ], null, null, 'side', 'high' );
+		}
+	}
+
+	/**
+	 * Dashboard Widget
+	 */
+	function dashboard_widget() {
+		$rss = fetch_feed( 'https://cultivatewp.com/category/publishers/how-to/feed/' );
+
+		if ( ! is_wp_error( $rss ) ) {
+			// Get the 5 most recent items from the feed
+			$items = $rss->get_items(0, 5);
+	
+			// Display the linked titles of the 5 most recent posts
+			echo '<ul>';
+			foreach ($items as $item) {
+				echo '<li><a href="' . esc_url($item->get_permalink()) . '" target="_blank">' . esc_html($item->get_title()) . '</a></li>';
+			}
+			echo '</ul>';
+		} else {
+			echo '<p>Error fetching RSS feed.</p>';
+		}
+
+		echo '<p>View all tutorials in our <a href="https://cultivatewp.com/resource-center/getting-started/" target="_blank">Getting Started Guide</a></p>';
+
+		if ( ! $this->is_active_client() ) {
+			echo '<hr />';
+			echo '<p>CultivateWP creates fast and beautiful websites for bloggers. Please <a href="https://cultivatewp.com/contact/" target="_blank">contact us</a> when you\'re ready to upgrade the design and functionality of your website.</p>';
 		}
 	}
 

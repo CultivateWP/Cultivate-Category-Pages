@@ -9,6 +9,7 @@
 **/
 
 namespace Cultivate_Category_Pages;
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
 final class Cultivate_Category_Pages {
 
@@ -137,9 +138,9 @@ final class Cultivate_Category_Pages {
 
 		if( is_admin() ) {
 			require CULTIVATE_CATEGORY_PAGES_PLUGIN_DIR . 'includes/updater/plugin-update-checker.php';
-			$myUpdateChecker = \Puc_v4_Factory::buildUpdateChecker(
-				'https://cultivatewp.com/plugins/cultivate-category-pages.json',
-				CULTIVATE_CATEGORY_PAGES_PLUGIN_FILE, //Full path to the main plugin file or functions.php.
+			$myUpdateChecker = PucFactory::buildUpdateChecker(
+				'https://github.com/CultivateWP/Cultivate-Category-Pages/',
+				__FILE__, //Full path to the main plugin file or functions.php.
 				'cultivate-category-pages'
 			);
 		}

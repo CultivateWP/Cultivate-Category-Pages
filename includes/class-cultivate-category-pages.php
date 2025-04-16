@@ -80,6 +80,7 @@ final class Cultivate_Category_Pages {
 			add_filter( 'wpseo_sitemap_exclude_post_type', [ self::$instance, 'wpseo_sitemap_exclude' ], 10, 2 );
 			add_action( 'enqueue_block_editor_assets', [ self::$instance, 'h1_warning' ] );
 			add_action( 'wp_dashboard_setup', [ self::$instance, 'register_dashboard_widget' ] );
+			add_action( 'wp_enqueue_scripts', [ self::$instance, 'enqueue_scripts' ] );
 			
 			// Theme locations
 			$locations = apply_filters(
@@ -616,6 +617,13 @@ final class Cultivate_Category_Pages {
 			echo '<hr />';
 			echo '<p>CultivateWP creates fast and beautiful websites for bloggers. Please <a href="https://cultivatewp.com/contact/" target="_blank">contact us</a> when you\'re ready to upgrade the design and functionality of your website.</p>';
 		}
+	}
+
+	/**
+	 * Enqueue Scripts
+	 */
+	function enqueue_scripts() {
+		wp_enqueue_style( 'cultivate-category-pages-frontend', CULTIVATE_CATEGORY_PAGES_PLUGIN_URL . 'assets/css/frontend.css', [], CULTIVATE_CATEGORY_PAGES_VERSION );
 	}
 
 }

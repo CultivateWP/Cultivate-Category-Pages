@@ -622,18 +622,18 @@ final class Cultivate_Category_Pages {
 			// Display the linked titles of the 5 most recent posts
 			echo '<ul>';
 			foreach ($items as $item) {
-				echo '<li><a href="' . esc_url($item->get_permalink()) . '" target="_blank">' . esc_html($item->get_title()) . '</a></li>';
+				echo '<li><a href="' . esc_url($item->get_permalink()) . '" target="_blank" rel="noopener noreferrer">' . esc_html($item->get_title()) . '</a></li>';
 			}
 			echo '</ul>';
 		} else {
 			echo '<p>Error fetching RSS feed.</p>';
 		}
 
-		echo '<p>View all tutorials in our <a href="https://cultivatewp.com/resource-center/getting-started/" target="_blank">Getting Started Guide</a></p>';
+		echo '<p>View all tutorials in our <a href="https://cultivatewp.com/resource-center/getting-started/" target="_blank" rel="noopener noreferrer">Getting Started Guide</a></p>';
 
 		if ( ! $this->is_active_client() ) {
 			echo '<hr />';
-			echo '<p>CultivateWP creates fast and beautiful websites for bloggers. Please <a href="https://cultivatewp.com/contact/" target="_blank">contact us</a> when you\'re ready to upgrade the design and functionality of your website.</p>';
+			echo '<p>CultivateWP creates fast and beautiful websites for bloggers. Please <a href="https://cultivatewp.com/contact/" target="_blank" rel="noopener noreferrer">contact us</a> when you\'re ready to upgrade the design and functionality of your website.</p>';
 		}
 	}
 

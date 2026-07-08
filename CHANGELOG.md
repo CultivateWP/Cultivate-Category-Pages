@@ -1,6 +1,18 @@
 # Change Log
 All notable changes to this project will be documented in this file, formatted via [this recommendation](http://keepachangelog.com/).
 
+## [1.3.0]
+### Changed
+- Update Plugin Update Checker to 5.7.
+- Use the plugin text domain for Category Pages labels.
+
+### Fixed
+- Prevent PHP deprecation warnings from malformed cached update data.
+- Escape archive title output.
+- Validate connected term links before using them in admin and permalink URLs.
+- Sanitize SVG icon names and classes.
+- Add noopener attributes to dashboard widget external links.
+
 ## [1.2.0]
 ### Added
 - Fix styling of "Read More" link in Post Listing block (WP 6.8 styling made it full width)

@@ -141,7 +141,7 @@ final class Cultivate_Category_Pages {
 			require CULTIVATE_CATEGORY_PAGES_PLUGIN_DIR . 'includes/updater/plugin-update-checker.php';
 			$myUpdateChecker = PucFactory::buildUpdateChecker(
 				'https://github.com/CultivateWP/Cultivate-Category-Pages/',
-				__FILE__, //Full path to the main plugin file or functions.php.
+				CULTIVATE_CATEGORY_PAGES_PLUGIN_FILE, // Full path to the main plugin file.
 				'cultivate-category-pages'
 			);
 		}

@@ -107,7 +107,7 @@ final class Cultivate_Category_Pages {
 	 * @todo generate pot file
 	 */
 	public function load_textdomain() {
-		load_plugin_textdomain( 'cultivate-category-pages', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		load_plugin_textdomain( 'cultivate-category-pages', false, dirname( plugin_basename( CULTIVATE_CATEGORY_PAGES_PLUGIN_FILE ) ) . '/languages/' );
 	}
 
 	/**
@@ -178,18 +178,18 @@ final class Cultivate_Category_Pages {
 	function register_cpt() {
 
 		$labels = [
-			'name'               => __( 'Category Pages', 'cultivate-pro' ),
-			'singular_name'      => __( 'Category Page', 'cultivate-pro' ),
-			'add_new'            => __( 'Add New', 'cultivate-pro' ),
-			'add_new_item'       => __( 'Add New Category Page', 'cultivate-pro' ),
-			'edit_item'          => __( 'Edit Category Page', 'cultivate-pro' ),
-			'new_item'           => __( 'New Category Page', 'cultivate-pro' ),
-			'view_item'          => __( 'View Category Page', 'cultivate-pro' ),
-			'search_items'       => __( 'Search Category Pages', 'cultivate-pro' ),
-			'not_found'          => __( 'No Category Pages found', 'cultivate-pro' ),
-			'not_found_in_trash' => __( 'No Category Pages found in Trash', 'cultivate-pro' ),
-			'parent_item_colon'  => __( 'Parent Category Page:', 'cultivate-pro' ),
-			'menu_name'          => __( 'Category Pages', 'cultivate-pro' ),
+			'name'               => __( 'Category Pages', 'cultivate-category-pages' ),
+			'singular_name'      => __( 'Category Page', 'cultivate-category-pages' ),
+			'add_new'            => __( 'Add New', 'cultivate-category-pages' ),
+			'add_new_item'       => __( 'Add New Category Page', 'cultivate-category-pages' ),
+			'edit_item'          => __( 'Edit Category Page', 'cultivate-category-pages' ),
+			'new_item'           => __( 'New Category Page', 'cultivate-category-pages' ),
+			'view_item'          => __( 'View Category Page', 'cultivate-category-pages' ),
+			'search_items'       => __( 'Search Category Pages', 'cultivate-category-pages' ),
+			'not_found'          => __( 'No Category Pages found', 'cultivate-category-pages' ),
+			'not_found_in_trash' => __( 'No Category Pages found in Trash', 'cultivate-category-pages' ),
+			'parent_item_colon'  => __( 'Parent Category Page:', 'cultivate-category-pages' ),
+			'menu_name'          => __( 'Category Pages', 'cultivate-category-pages' ),
 		];
 
 		$args = [
@@ -250,7 +250,7 @@ final class Cultivate_Category_Pages {
 
 		$taxonomy_select_field = [[
 			'key'		=> 'field_5da8747adb0bf',
-			'label'		=> __( 'Taxonomy', 'cultivate-pro' ),
+			'label'		=> __( 'Taxonomy', 'cultivate-category-pages' ),
 			'name'		=> 'be_connected_taxonomy',
 			'type'		=> 'select',
 			'choices'	=> $taxonomies,
@@ -258,7 +258,7 @@ final class Cultivate_Category_Pages {
 		]];
 
 		$settings = apply_filters( 'cultivate_pro/landing/field_group', [
-			'title' => __( 'Appears On', 'cultivate-pro' ),
+			'title' => __( 'Appears On', 'cultivate-category-pages' ),
 			'fields' => array_merge( $taxonomy_select_field, $tax_fields ),
 			'location' => [
 				[
@@ -344,7 +344,7 @@ final class Cultivate_Category_Pages {
 				echo apply_filters( 'cultivate_pro/landing/the_content', $post->post_content );
 			echo '</div>';
 			if( is_archive() && empty( $block_area ) ) {
-				$title = __( 'Newest', 'cultivate-pro' ) . ' ' . get_the_archive_title();
+				$title = __( 'Newest', 'cultivate-category-pages' ) . ' ' . get_the_archive_title();
 				$title = apply_filters( 'cultivate_pro/landing/archive_title', $title );
 				if( !empty( $title ) )
 					echo '<header id="recent" class="archive-recent-header"><h2>' . esc_html( $title ) . '</h2></header>';
@@ -450,14 +450,14 @@ final class Cultivate_Category_Pages {
 		if( !empty( $archive_id ) ) {
 			$wp_admin_bar->add_node( [
 				'id' => 'cultivate_category_pages',
-				'title' => $icon . __( 'Edit Category Page', 'cultivate-pro' ),
+				'title' => $icon . __( 'Edit Category Page', 'cultivate-category-pages' ),
 				'href'  => get_edit_post_link( $archive_id ),
 			] );
 
 		} else {
 			$wp_admin_bar->add_node( [
 				'id' => 'cultivate_category_pages',
-				'title' => $icon . __( 'Add Category Page', 'cultivate-pro' ),
+				'title' => $icon . __( 'Add Category Page', 'cultivate-category-pages' ),
 				'href'  => admin_url( 'post-new.php?post_type=' . $this->post_type . '&cultivate_tax=' . $taxonomy . '&cultivate_term=' . get_queried_object_id() )
 			] );
 		}
@@ -486,7 +486,7 @@ final class Cultivate_Category_Pages {
 		$icon = '<span style="display: block; float: left; margin: 5px 5px 0 0;">' . cultivate_category_pages()->icon( [ 'icon' => 'cultivatewp-menu', 'size' => 20 ] ) . '</span>';
 		$wp_admin_bar->add_node( [
 			'id'	=> 'cultivate_category_pages',
-			'title'	=> $icon . __( 'View Category Page', 'cultivate-pro' ),
+			'title'	=> $icon . __( 'View Category Page', 'cultivate-category-pages' ),
 			'href'	=> $term_link,
 		] );
 	}

@@ -545,7 +545,12 @@ final class Cultivate_Category_Pages {
 		if( empty( $atts['icon'] ) )
 			return;
 
-		$icon_path = CULTIVATE_CATEGORY_PAGES_PLUGIN_DIR . 'assets/icons/' . $atts['icon'] . '.svg';
+		$icon = sanitize_key( $atts['icon'] );
+		if ( empty( $icon ) ) {
+			return;
+		}
+
+		$icon_path = CULTIVATE_CATEGORY_PAGES_PLUGIN_DIR . 'assets/icons/' . $icon . '.svg';
 		if( ! file_exists( $icon_path ) )
 			return;
 
@@ -558,8 +563,12 @@ final class Cultivate_Category_Pages {
 		}
 		$svg  = preg_replace( "/([\n\t]+)/", ' ', $svg ); // Remove newlines & tabs.
 		$svg  = preg_replace( '/>\s*</', '><', $svg ); // Remove white space between SVG tags.
-		if( !empty( $atts['class'] ) )
-			$svg = preg_replace( "/^<svg /", '<svg class="' . $atts['class'] . '"', $svg );
+		if( !empty( $atts['class'] ) ) {
+			$classes = array_filter( array_map( 'sanitize_html_class', preg_split( '/\s+/', (string) $atts['class'] ) ) );
+			if ( ! empty( $classes ) ) {
+				$svg = preg_replace( "/^<svg /", '<svg class="' . esc_attr( join( ' ', $classes ) ) . '" ', $svg );
+			}
+		}
 		return $svg;
 	}
 

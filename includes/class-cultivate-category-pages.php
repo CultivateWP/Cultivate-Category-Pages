@@ -424,13 +424,22 @@ final class Cultivate_Category_Pages {
 			return false;
 
 		$taxonomy = get_post_meta( $archive_id, 'be_connected_taxonomy', true );
+		if ( empty( $taxonomy ) || ! taxonomy_exists( $taxonomy ) ) {
+			return false;
+		}
+
 		$term = get_post_meta( $archive_id, 'be_connected_' . $taxonomy, true );
 
 		if( empty( $term ) )
 			return false;
 
 		$term = get_term_by( 'term_id', $term, $taxonomy );
-		return get_term_link( $term, $taxonomy );
+		if ( empty( $term ) || is_wp_error( $term ) ) {
+			return false;
+		}
+
+		$link = get_term_link( $term, $taxonomy );
+		return is_wp_error( $link ) ? false : $link;
 	}
 
 	/**

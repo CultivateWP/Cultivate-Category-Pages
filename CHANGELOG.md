@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file, formatted via [this recommendation](http://keepachangelog.com/).
 
+## [1.3.1]
+### Fixed
+- Load the GitHub updater outside admin requests so scheduled, CLI, REST, AJAX, and external management checks can register update hooks.
+- Add the Update URI plugin header for the GitHub-hosted update source.
+
 ## [1.3.0]
 ### Changed
 - Update Plugin Update Checker to 5.7.

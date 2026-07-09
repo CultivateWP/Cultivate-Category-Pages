@@ -137,14 +137,14 @@ final class Cultivate_Category_Pages {
 	 */
 	public function includes() {
 
-		if( is_admin() ) {
-			require CULTIVATE_CATEGORY_PAGES_PLUGIN_DIR . 'includes/updater/plugin-update-checker.php';
-			$myUpdateChecker = PucFactory::buildUpdateChecker(
-				'https://github.com/CultivateWP/Cultivate-Category-Pages/',
-				CULTIVATE_CATEGORY_PAGES_PLUGIN_FILE, // Full path to the main plugin file.
-				'cultivate-category-pages'
-			);
-		}
+		require CULTIVATE_CATEGORY_PAGES_PLUGIN_DIR . 'includes/updater/plugin-update-checker.php';
+
+		$update_checker = PucFactory::buildUpdateChecker(
+			'https://github.com/CultivateWP/Cultivate-Category-Pages/',
+			CULTIVATE_CATEGORY_PAGES_PLUGIN_FILE,
+			'cultivate-category-pages'
+		);
+		$update_checker->setBranch( 'master' );
 	}
 
 	/**

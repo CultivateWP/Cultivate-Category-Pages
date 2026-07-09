@@ -4,7 +4,8 @@
  * Description: Build curated, SEO friendly category pages using the block editor
  * Author:      CultivateWP
  * Author URI:  https://cultivatewp.com/
- * Version:     1.3.0
+ * Version:     1.3.1
+ * Update URI:  https://github.com/CultivateWP/Cultivate-Category-Pages/
  * Text Domain: cultivate-category-pages
  *
  * Cultivate Category Pages is free software: you can redistribute it and/or modify
@@ -28,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Plugin version.
 if ( ! defined( 'CULTIVATE_CATEGORY_PAGES_VERSION' ) ) {
-	define( 'CULTIVATE_CATEGORY_PAGES_VERSION', '1.3.0' );
+	define( 'CULTIVATE_CATEGORY_PAGES_VERSION', '1.3.1' );
 }
 
 // Plugin Folder Path.

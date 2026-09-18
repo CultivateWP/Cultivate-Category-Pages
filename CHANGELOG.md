@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file, formatted via [this recommendation](http://keepachangelog.com/).
 
+## [1.3.2]
+### Fixed
+- Filter inaccessible WP Recipe Maker recipes from content recipe IDs to prevent theme errors when a recipe is in draft status.
+
 ## [1.3.1]
 ### Fixed
 - Load the GitHub updater outside admin requests so scheduled, CLI, REST, AJAX, and external management checks can register update hooks.

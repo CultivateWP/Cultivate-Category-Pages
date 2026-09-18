@@ -81,6 +81,7 @@ final class Cultivate_Category_Pages {
 			add_action( 'enqueue_block_editor_assets', [ self::$instance, 'h1_warning' ] );
 			add_action( 'wp_dashboard_setup', [ self::$instance, 'register_dashboard_widget' ] );
 			add_action( 'wp_enqueue_scripts', [ self::$instance, 'enqueue_scripts' ] );
+			add_filter( 'wprm_get_recipe_ids_from_content', [ self::$instance, 'filter_wprm_recipe_ids_from_content' ], 10, 2 );
 			
 			// Theme locations
 			$locations = apply_filters(
@@ -145,6 +146,36 @@ final class Cultivate_Category_Pages {
 			'cultivate-category-pages'
 		);
 		$update_checker->setBranch( 'master' );
+	}
+
+	/**
+	 * Remove WP Recipe Maker recipes that the current user cannot access.
+	 *
+	 * WPRM 10.8.2+ can return false from get_recipe() for draft recipes on
+	 * public requests, while get_recipe_ids_from_content() still returns their
+	 * IDs. Keep the two APIs consistent so themes do not dereference false.
+	 *
+	 * @since 1.3.2
+	 *
+	 * @param array  $recipe_ids Recipe IDs found in the content.
+	 * @param string $content    Content that was searched.
+	 * @return array Accessible recipe IDs.
+	 */
+	public function filter_wprm_recipe_ids_from_content( $recipe_ids, $content ) {
+		if ( ! class_exists( 'WPRM_Recipe_Manager' ) ) {
+			return $recipe_ids;
+		}
+
+		$recipe_ids = array_unique( array_map( 'intval', $recipe_ids ) );
+
+		$recipe_ids = array_filter(
+			$recipe_ids,
+			function( $recipe_id ) {
+				return $recipe_id > 0 && false !== \WPRM_Recipe_Manager::get_recipe( $recipe_id );
+			}
+		);
+
+		return array_values( $recipe_ids );
 	}
 
 	/**

@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file, formatted via [this recommendation](http://keepachangelog.com/).
 
+## [1.3.3]
+### Fixed
+- Strip HTML tags from archive headings before escaping so WordPress title wrappers do not appear as literal markup, including headings customized by themes.
+
 ## [1.3.2]
 ### Fixed
 - Filter inaccessible WP Recipe Maker recipes from content recipe IDs to prevent theme errors when a recipe is in draft status.

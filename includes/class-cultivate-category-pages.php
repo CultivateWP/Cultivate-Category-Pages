@@ -378,7 +378,7 @@ final class Cultivate_Category_Pages {
 				$title = __( 'Newest', 'cultivate-category-pages' ) . ' ' . get_the_archive_title();
 				$title = apply_filters( 'cultivate_pro/landing/archive_title', $title );
 				if( !empty( $title ) )
-					echo '<header id="recent" class="archive-recent-header"><h2>' . esc_html( $title ) . '</h2></header>';
+					echo '<header id="recent" class="archive-recent-header"><h2>' . esc_html( wp_strip_all_tags( $title ) ) . '</h2></header>';
 			}
 		endwhile; endif; wp_reset_postdata();
 	}

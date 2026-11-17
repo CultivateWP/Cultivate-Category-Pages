@@ -1,10 +1,6 @@
 # Change Log
 All notable changes to this project will be documented in this file, formatted via [this recommendation](http://keepachangelog.com/).
 
-## [Unreleased]
-### Fixed
-- Keep taxonomy selector field keys stable when supported taxonomies are inserted, removed or reordered. Preserve the default category key and resolve saved positional references by field name without rewriting existing metadata.
-
 ## [1.3.3]
 ### Fixed
 - Strip HTML tags from archive headings before escaping so WordPress title wrappers do not appear as literal markup, including headings customized by themes.

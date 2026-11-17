@@ -74,6 +74,7 @@ final class Cultivate_Category_Pages {
 			add_filter( 'body_class', [ self::$instance, 'body_class' ], 30 );
 			add_filter( 'admin_body_class', [ self::$instance, 'admin_body_class' ] );
 			add_action( 'acf/init', [ self::$instance, 'register_metabox' ] );
+			add_filter( 'acf/load_reference', [ self::$instance, 'legacy_taxonomy_reference' ], 10, 3 );
 			add_action( 'admin_bar_menu', [ self::$instance, 'admin_bar_link_front' ], 90 );
 			add_action( 'admin_bar_menu', [ self::$instance, 'admin_bar_link_back' ], 90 );
 			add_filter( 'post_type_link', [ self::$instance, 'post_type_link' ], 10, 2 );
@@ -254,13 +255,13 @@ final class Cultivate_Category_Pages {
 		$default_term = !empty( $_GET['cultivate_term'] ) ? intval( $_GET['cultivate_term'] ) : false;
 		$default_tax = !empty( $_GET['cultivate_tax'] ) ? esc_attr( $_GET['cultivate_tax'] ) : false;
 		$tax = false;
-		foreach( $this->supported_taxonomies as $i => $tax_slug ) {
+		foreach( $this->supported_taxonomies as $tax_slug ) {
 			$tax = get_taxonomy( $tax_slug );
 			$taxonomies[ $tax_slug ] = $tax->labels->singular_name;
 			$default = $tax_slug === $default_tax ? $default_term : false;
 
 			$tax_fields[] = [
-				'key'					=> 'field_10' . $i,
+				'key'					=> $this->taxonomy_field_key( $tax_slug ),
 				'label'					=> $tax->labels->name,
 				'name'					=> 'be_connected_' . str_replace( '-', '_', $tax_slug ),
 				'type'					=> 'taxonomy',
@@ -306,6 +307,36 @@ final class Cultivate_Category_Pages {
 
 		if( ! empty( $settings ) )
 			acf_add_local_field_group( $settings );
+	}
+
+	/**
+	 * Stable term field key, preserving the category field shipped with the plugin.
+	 *
+	 * @param string $taxonomy Taxonomy slug.
+	 * @return string
+	 */
+	private function taxonomy_field_key( $taxonomy ) {
+		return 'category' === $taxonomy ? 'field_100' : 'field_cultivate_category_pages_' . $taxonomy;
+	}
+
+	/**
+	 * Resolve saved positional references by field name without rewriting post meta.
+	 *
+	 * @param string $reference Saved ACF field key.
+	 * @param string $field_name Meta field name.
+	 * @param int    $post_id Landing page ID.
+	 * @return string
+	 */
+	public function legacy_taxonomy_reference( $reference, $field_name, $post_id ) {
+		if ( ! is_string( $reference ) || ! preg_match( '/^field_10[0-9]+$/', $reference ) || get_post_type( $post_id ) !== $this->post_type ) {
+			return $reference;
+		}
+		foreach ( $this->supported_taxonomies as $taxonomy ) {
+			if ( $field_name === 'be_connected_' . str_replace( '-', '_', $taxonomy ) ) {
+				return $this->taxonomy_field_key( $taxonomy );
+			}
+		}
+		return $reference;
 	}
 
 	/**
